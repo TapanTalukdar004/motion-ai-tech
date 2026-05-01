@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #f7f9fc;
+  --color-surface: #f7f9fc;
+  --color-surface-container-low: #f2f4f7;
+  --color-surface-container: #eceef1;
+  --color-surface-container-high: #e6e8eb;
+  --color-surface-container-highest: #e0e3e6;
+  --color-surface-container-lowest: #ffffff;
+  
+  --color-primary: #b7131a;
+  --color-primary-container: #db322f;
+  --color-on-primary: #ffffff;
+  
+  --color-secondary: #994700;
+  --color-secondary-container: #fb7800;
+  --color-on-secondary: #ffffff;
+  
+  --color-tertiary: #005ea4;
+  --color-tertiary-container: #0077ce;
+  --color-on-tertiary: #ffffff;
+  
+  --color-outline-variant: #e4beb9;
+  --color-on-surface: #191c1e;
+  --color-on-background: #191c1e;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-heading: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
