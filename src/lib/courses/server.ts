@@ -3,6 +3,8 @@ import { Course } from './types';
 
 export async function getCourses(): Promise<Course[]> {
   const supabase = await createClient();
+  if (!supabase) return [];
+  
   const { data, error } = await supabase
     .from('courses')
     .select('*')
@@ -18,6 +20,8 @@ export async function getCourses(): Promise<Course[]> {
 
 export async function getCourseBySlug(slug: string): Promise<Course | null> {
   const supabase = await createClient();
+  if (!supabase) return null;
+
   const { data, error } = await supabase
     .from('courses')
     .select('*')
@@ -31,3 +35,4 @@ export async function getCourseBySlug(slug: string): Promise<Course | null> {
 
   return data as Course;
 }
+
