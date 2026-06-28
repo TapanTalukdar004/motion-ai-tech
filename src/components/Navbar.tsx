@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu, Search, User, LogOut, X, BookOpen, Info, LayoutDashboard } from "lucide-react";
+import { Menu, Search, User, LogOut, X, BookOpen, Info, LayoutDashboard, Tag } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -68,6 +68,9 @@ export function Navbar() {
             <div className="hidden md:flex items-center space-x-8">
               <Link href="/courses" className="text-on-surface-variant hover:text-primary transition-colors font-medium">
                 Courses
+              </Link>
+              <Link href="/courses#pricing" className="text-on-surface-variant hover:text-primary transition-colors font-medium">
+                Pricing
               </Link>
               <Link href="/about" className="text-on-surface-variant hover:text-primary transition-colors font-medium">
                 About
@@ -184,6 +187,10 @@ export function Navbar() {
                   <Link href="/courses" className="flex items-center gap-4 p-4 rounded-2xl hover:bg-surface-container-high transition-colors font-bold text-on-surface">
                     <BookOpen className="w-5 h-5 text-primary" />
                     Courses
+                  </Link>
+                  <Link href="/courses#pricing" className="flex items-center gap-4 p-4 rounded-2xl hover:bg-surface-container-high transition-colors font-bold text-on-surface">
+                    <Tag className="w-5 h-5 text-secondary-container" />
+                    Pricing
                   </Link>
                   <Link href="/about" className="flex items-center gap-4 p-4 rounded-2xl hover:bg-surface-container-high transition-colors font-bold text-on-surface">
                     <Info className="w-5 h-5 text-tertiary" />

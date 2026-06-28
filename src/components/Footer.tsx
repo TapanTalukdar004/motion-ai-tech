@@ -12,11 +12,12 @@ export function Footer() {
             </p>
           </div>
           <div className="space-y-4">
-            <h4 className="font-heading font-bold text-lg text-on-surface">Platform</h4>
+            <h4 className="font-heading font-bold text-lg text-on-surface">Program</h4>
             <ul className="space-y-2">
-              <li><Link href="/courses" className="text-on-surface-variant hover:text-primary transition-colors">Browse Courses</Link></li>
+              <li><Link href="/courses/dsa-cpp-sql" className="text-on-surface-variant hover:text-primary transition-colors">DSA with C++ &amp; SQL</Link></li>
+              <li><Link href="/courses/python-ai-ml" className="text-on-surface-variant hover:text-primary transition-colors">Python with AI &amp; ML</Link></li>
+              <li><Link href="/courses#pricing" className="text-on-surface-variant hover:text-primary transition-colors">Pricing</Link></li>
               <li><Link href="/about" className="text-on-surface-variant hover:text-primary transition-colors">About Us</Link></li>
-              <li><Link href="/dashboard" className="text-on-surface-variant hover:text-primary transition-colors">Student Dashboard</Link></li>
             </ul>
           </div>
           <div className="space-y-4">

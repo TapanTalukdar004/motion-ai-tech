@@ -1,0 +1,595 @@
+// -----------------------------------------------------------------------------
+// Young Coders Program — course content (LIVE SOURCE OF TRUTH).
+//
+// Hybrid model: these typed objects are rendered directly by the site today, so
+// the catalog works with NO database. The shape mirrors a `courses` table row —
+// the base `Course` fields map 1:1 to columns, and the richer fields
+// (curriculum, capstone, aiBonus, outcomes, mlAlgorithms, pricing) map cleanly
+// to JSONB columns — so this can be seeded to Supabase later without rework.
+// To sync: insert one row per course; store the extra fields as JSONB.
+// -----------------------------------------------------------------------------
+
+import type { Course } from "./types";
+
+export interface CurriculumWeek {
+  week: string; // e.g. "Week 1"
+  title: string;
+  topics: string;
+  practice: string;
+}
+
+export interface CurriculumMonth {
+  title: string; // e.g. "Month 1 — Programming Foundations & Algorithmic Thinking"
+  weeks: CurriculumWeek[];
+}
+
+export interface Capstone {
+  intro: string;
+  options: string[];
+  note?: string;
+}
+
+export interface MlAlgorithm {
+  algorithm: string;
+  use: string;
+}
+
+/** A single AI-bonus lesson — either concept ("theory") or build ("practical"). */
+export interface AiBonusActivity {
+  type: "theory" | "practical";
+  icon?: string; // key mapped to a lucide icon in the AiBonus component
+  title: string;
+  description: string;
+  tool?: string; // free, browser-based tool used (practical activities)
+}
+
+export interface AiBonus {
+  title: string;
+  tagline: string;
+  body: string;
+  activities: AiBonusActivity[];
+  takeaway?: string;
+}
+
+/** Superset of the DB `Course` shape with the richer Young Coders content. */
+export interface ProgramCourse extends Course {
+  level: string;
+  ageGroup: string;
+  format: string;
+  whyThisCourse: string[];
+  curriculum: CurriculumMonth[];
+  capstone: Capstone;
+  aiBonus: AiBonus;
+  outcomes: string[];
+  mlAlgorithms?: MlAlgorithm[];
+  isNew?: boolean;
+}
+
+// Shared, honest "what you'll get" list (no fabricated ratings / student counts).
+const COMMON_INCLUDES = [
+  "8 weeks of live, hands-on sessions",
+  "Weekly practical exercises you actually build",
+  "A capstone project you create & present",
+  "Certificate of completion",
+  "Doubt support throughout the course",
+];
+
+export const PROGRAM = {
+  name: "Young Coders Program",
+  tagline: "Coding, Data & Artificial Intelligence",
+  audience: "For students of Class 9 and above (ages 14+)",
+  intro:
+    "A structured, hands-on track of two courses. Each runs for 2 months (8 weeks), builds from absolute basics, pairs every concept with weekly practical work, and ends with a project the student builds and presents. No prior experience needed — all tools are free and browser-based.",
+  format: "~2–3 sessions / week · concept + live coding each session · weekly practicals",
+} as const;
+
+export const COURSES: ProgramCourse[] = [
+  // ---------------------------------------------------------------------------
+  // Course 1 — DSA Foundations with C++ & SQL
+  // ---------------------------------------------------------------------------
+  {
+    id: "yc-dsa-cpp-sql",
+    slug: "dsa-cpp-sql",
+    title: "DSA Foundations with C++ & SQL",
+    instructor: "Motion AI Faculty",
+    thumbnail:
+      "https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=1200&auto=format&fit=crop",
+    duration: "2 months · 8 weeks",
+    students: 0,
+    rating: 0,
+    tags: ["C++", "SQL", "DSA"],
+    isNew: true,
+    level: "Beginner · No prerequisites",
+    ageGroup: "Class 9+ · Ages 14+",
+    format: "Concept + Practical · weekly hands-on · final capstone",
+    description:
+      "Build rock-solid programming logic with C++ and master the data skills behind every app. From your very first program to data structures, algorithms and SQL — the #1 foundation for top tech and engineering careers.",
+    suitable_for: [
+      "Class 9 & above",
+      "Absolute beginners",
+      "Future CS & engineering students",
+      "Aspiring competitive coders",
+    ],
+    whyThisCourse: [
+      "Builds rock-solid programming logic and problem-solving ability.",
+      "Data Structures & Algorithms is the #1 skill tested in top tech & engineering interviews — a major early head start.",
+      "A strong foundation for competitive coding, Olympiads & hackathons.",
+      "SQL is an essential, always-in-demand data skill.",
+      "Perfect preparation for Computer Science in school & college.",
+    ],
+    curriculum: [
+      {
+        title: "Month 1 — Programming Foundations & Algorithmic Thinking",
+        weeks: [
+          {
+            week: "Week 1",
+            title: "Getting Started with C++",
+            topics:
+              "How programs run (compiler vs. interpreter); the structure of a C++ program; variables & data types (int, float, char, bool, string); input/output with cin/cout; arithmetic & logical operators; comments and basic debugging.",
+            practice:
+              "First programs — a personal-info printer, a temperature/unit converter, and a simple calculator.",
+          },
+          {
+            week: "Week 2",
+            title: "Control Flow & Functions",
+            topics:
+              "if / else-if / else and switch-case; for, while and do-while loops; nested loops; break & continue; writing functions (parameters, return values, scope); breaking a problem into steps.",
+            practice:
+              "Number-guessing game, a multiplication-table generator, and a menu-driven calculator built with functions.",
+          },
+          {
+            week: "Week 3",
+            title: "Arrays, Strings & Pointers",
+            topics:
+              "1-D & 2-D arrays; traversing and updating arrays; common operations (sum, max/min, reverse); strings & string functions; an introduction to pointers & references; how memory and addresses work.",
+            practice:
+              "Find the largest/smallest element, reverse an array, check for a palindrome, and a simple matrix operation.",
+          },
+          {
+            week: "Week 4",
+            title: "Algorithmic Thinking: Complexity, Searching & Sorting",
+            topics:
+              "What an algorithm is and why efficiency matters; time & space complexity (Big-O made simple); linear vs. binary search; bubble sort & selection sort step-by-step; comparing approaches.",
+            practice:
+              "Code linear & binary search; implement and trace bubble and selection sort; test which runs faster on larger inputs.",
+          },
+        ],
+      },
+      {
+        title: "Month 2 — Core Data Structures & Databases",
+        weeks: [
+          {
+            week: "Week 5",
+            title: "Recursion & Linked Lists",
+            topics:
+              "What recursion is; base case vs. recursive case; factorial, Fibonacci and sum-of-digits; recursion vs. iteration; an introduction to dynamic memory; singly linked lists (insert, delete, traverse).",
+            practice:
+              "Classic recursion problems, and a simple linked list to store and display items (e.g., a playlist).",
+          },
+          {
+            week: "Week 6",
+            title: "Stacks, Queues & Hashing",
+            topics:
+              "Stack (LIFO) — push/pop and real uses (undo, browser back); Queue (FIFO) — enqueue/dequeue and real uses (ticket/printer lines); implementing them with arrays; an introduction to hashing & hash maps for fast lookup.",
+            practice:
+              "A bracket-matching checker using a stack; simulate a ticket queue; use a hash map for quick word/contact lookup.",
+          },
+          {
+            week: "Week 7",
+            title: "SQL Foundations: Working with Databases",
+            topics:
+              "What a database is (tables, rows, columns, keys); creating tables & data types; SELECT, WHERE, ORDER BY, LIMIT; filtering & sorting; INSERT / UPDATE / DELETE; primary keys.",
+            practice:
+              "Design and build a small database (e.g., a Students or Movies table) and run queries to add, filter, sort and update records.",
+          },
+          {
+            week: "Week 8",
+            title: "Advanced SQL + Capstone",
+            topics:
+              "Aggregate functions (COUNT, SUM, AVG, MIN, MAX); GROUP BY & HAVING; an introduction to JOINs (combining two tables); bringing logic and data together.",
+            practice:
+              "Write grouped reports and join two tables, then begin the capstone project.",
+          },
+        ],
+      },
+    ],
+    capstone: {
+      intro: "Choose one project to build and present at the end of the course:",
+      options: [
+        "A console mini-app in C++ — an inventory, quiz, or banking menu using arrays, functions & a data structure.",
+        "A small SQL database project — e.g., a Library or School management mini-system with multiple tables and meaningful reports.",
+      ],
+      note: "Students present their work at the end.",
+    },
+    aiBonus: {
+      title: "The Algorithms Behind AI",
+      tagline:
+        "A hands-on bonus that connects everything you've built to the AI shaping the real world.",
+      body: "You've learned the logic, data structures and databases that power software. This bonus shows how those exact ideas drive the AI you use every day — and lets you build your first AI-powered projects right in the browser, no extra setup.",
+      activities: [
+        {
+          type: "theory",
+          icon: "search",
+          title: "The search & ranking that runs the internet",
+          description:
+            "How the searching, sorting and graph ideas from this course power Google results, YouTube/Netflix recommendations and Maps routes.",
+        },
+        {
+          type: "theory",
+          icon: "database",
+          title: "Data is the fuel of AI",
+          description:
+            "Why the SQL and databases you just learned are exactly what trains and feeds modern AI models — no clean data, no smart AI.",
+        },
+        {
+          type: "practical",
+          icon: "chat",
+          title: "Build a rule-based chatbot in C++",
+          description:
+            "Use your loops, functions and data structures to build a small console chatbot / FAQ helper that replies based on what the user types.",
+          tool: "Online C++ compiler",
+        },
+        {
+          type: "practical",
+          icon: "bot",
+          title: "Code faster with an AI assistant",
+          description:
+            "Use a free AI coding assistant to explain errors and draft C++ & SQL for you — then read, test and improve what it writes.",
+          tool: "ChatGPT / GitHub Copilot",
+        },
+        {
+          type: "practical",
+          icon: "sparkles",
+          title: "Meet AI agents",
+          description:
+            "Try a free AI assistant that can take steps and use tools, and map out which algorithms (search, lookups) make it work behind the scenes.",
+          tool: "Free AI assistant",
+        },
+        {
+          type: "theory",
+          icon: "shield",
+          title: "Prompt well & use AI responsibly",
+          description:
+            "The basics of clear prompting, plus how to use AI honestly and safely in schoolwork — checking answers, bias and privacy.",
+        },
+      ],
+      takeaway:
+        "You'll be able to explain how AI really works under the hood — and you'll have built your own chatbot and used AI tools to write code.",
+    },
+    outcomes: [
+      "Write clean, working C++ programs",
+      "Pick the right data structure for a problem",
+      "Analyze and compare algorithm efficiency",
+      "Store, query & manage data with SQL",
+    ],
+    tutor_support:
+      "No prior experience needed. Every concept is taught from absolute basics with live coding, and all tools are free and browser-based — nothing to install.",
+    what_you_will_learn: [
+      "Write clean, working C++ programs",
+      "Pick the right data structure for a problem",
+      "Analyze and compare algorithm efficiency",
+      "Store, query & manage data with SQL",
+    ],
+    what_you_will_get: COMMON_INCLUDES,
+    tools: ["C++", "SQL", "Online C++ compiler", "Online SQL playground"],
+    price: "₹5,999",
+  },
+
+  // ---------------------------------------------------------------------------
+  // Course 2 — Python with AI & Machine Learning
+  // ---------------------------------------------------------------------------
+  {
+    id: "yc-python-ai-ml",
+    slug: "python-ai-ml",
+    title: "Python with AI & Machine Learning",
+    instructor: "Motion AI Faculty",
+    thumbnail: "/images/python-thumbnail.png",
+    duration: "2 months · 8 weeks",
+    students: 0,
+    rating: 0,
+    tags: ["Python", "AI", "ML"],
+    isNew: true,
+    level: "Beginner · No prerequisites",
+    ageGroup: "Class 9+ · Ages 14+",
+    format: "Concept + Practical · weekly hands-on · final capstone",
+    description:
+      "Go from your first line of Python to building and presenting your own AI. A jargon-free, hands-on journey through Python, data and the real machine-learning algorithms behind today's smartest apps.",
+    suitable_for: [
+      "Class 9 & above",
+      "Absolute beginners",
+      "Aspiring data & AI enthusiasts",
+      "Future CS students",
+    ],
+    whyThisCourse: [
+      "Python is the #1 most in-demand and easiest language to start with.",
+      "A true, jargon-free understanding of AI & ML — the most future-proof skills.",
+      "Hands-on practice with real machine-learning algorithms.",
+      "Data skills used across data science & analytics.",
+      "Students finish with a real AI project for their portfolio.",
+    ],
+    curriculum: [
+      {
+        title: "Month 1 — Python Programming & Working with Data",
+        weeks: [
+          {
+            week: "Week 1",
+            title: "Python Basics",
+            topics:
+              "Why Python; running code in Google Colab; variables & data types; input/output; operators; strings & f-strings; comments; reading and fixing common errors.",
+            practice:
+              "A greeting program and a simple calculator, plus a BMI or marks-percentage calculator.",
+          },
+          {
+            week: "Week 2",
+            title: "Logic, Loops & Functions",
+            topics:
+              "if / elif / else; for & while loops; range; break & continue; defining functions (arguments & return); built-in modules (math, random).",
+            practice:
+              "Number-guessing game, a short quiz app, and a pattern / times-table printer.",
+          },
+          {
+            week: "Week 3",
+            title: "Python Data Structures",
+            topics:
+              "Lists (add, remove, slice, sort); tuples; dictionaries (key–value); sets; looping over collections; list comprehension (intro); nested data.",
+            practice:
+              "A to-do list, a student-marks dictionary with lookups, and a simple contact book.",
+          },
+          {
+            week: "Week 4",
+            title: "Working with Data: NumPy, pandas & Visualization",
+            topics:
+              "Why data matters for AI; NumPy arrays & operations; pandas DataFrames; reading a CSV; selecting / filtering / sorting data; handling missing values (intro); plotting with Matplotlib (bar, line, scatter).",
+            practice:
+              "Load a real CSV dataset (marks / weather / sales), clean and explore it, and create charts to spot patterns.",
+          },
+        ],
+      },
+      {
+        title: "Month 2 — Machine Learning & AI",
+        weeks: [
+          {
+            week: "Week 5",
+            title: "How Machines Learn (ML Foundations)",
+            topics:
+              "AI vs. ML vs. Deep Learning; supervised vs. unsupervised learning; the ML workflow (data → train → test → predict); features & labels; training vs. testing data; what “a model” is; overfitting (intro).",
+            practice:
+              "No-code ML — train an image or sound classifier with Google Teachable Machine, then test where it works and where it fails.",
+          },
+          {
+            week: "Week 6",
+            title: "Core ML Algorithms I: Prediction & Classification",
+            topics:
+              "Linear Regression (predicting numbers); Logistic Regression (yes/no classification); Decision Trees & a first look at Random Forests (how data is split); measuring accuracy; using scikit-learn.",
+            practice:
+              "Train a Linear Regression model to predict scores/prices; build a Decision Tree classifier and check its accuracy.",
+          },
+          {
+            week: "Week 7",
+            title: "Core ML Algorithms II: Similarity, Clustering & Neural Nets",
+            topics:
+              "K-Nearest Neighbors (recommendations & classification); K-Means clustering (grouping unlabeled data); Naive Bayes (text/spam, intro); what a neural network is (neurons & layers, concept level); how chatbots & generative AI work.",
+            practice:
+              "Build a KNN recommender (suggest similar items) and run K-Means to group data into clusters, then visualize them.",
+          },
+          {
+            week: "Week 8",
+            title: "Build Your Own AI + Capstone",
+            topics:
+              "Choosing the right algorithm; the full project workflow; presenting results clearly; responsible & ethical AI (bias, fairness, data privacy).",
+            practice: "Build a complete mini AI project end-to-end and present it.",
+          },
+        ],
+      },
+    ],
+    mlAlgorithms: [
+      { algorithm: "Linear Regression", use: "Predicting prices, sales & trends" },
+      { algorithm: "Logistic Regression", use: "Spam detection, yes/no decisions" },
+      { algorithm: "Decision Tree / Random Forest", use: "Loan approval, diagnosis" },
+      { algorithm: "K-Nearest Neighbors (KNN)", use: "“You may also like” recommendations" },
+      { algorithm: "K-Means Clustering", use: "Customer segmentation, grouping" },
+      { algorithm: "Naive Bayes", use: "Sentiment analysis, email filtering" },
+      { algorithm: "Neural Networks", use: "Image & voice recognition" },
+      { algorithm: "Generative AI", use: "Chatbots & AI art (intro level)" },
+    ],
+    capstone: {
+      intro: "Choose one project to build and present:",
+      options: [
+        "A marks or price predictor",
+        "An image or sound classifier (Teachable Machine + Python)",
+        "A text sentiment analyzer",
+        "A simple recommendation system",
+      ],
+      note: "Students prepare and present their project and results.",
+    },
+    aiBonus: {
+      title: "AI in the Real World — Build Your Own",
+      tagline:
+        "Go beyond models: see where AI works in industry, then build your own chatbot and a simple AI agent.",
+      body: "A guided tour of how AI is used across industries — paired with hands-on bonus projects where you build the kinds of AI you actually use: a chatbot, a simple agent, and generative AI. Everything runs free in the browser.",
+      activities: [
+        {
+          type: "theory",
+          icon: "brain",
+          title: "How chatbots & LLMs actually work",
+          description:
+            "A jargon-free look at how tools like ChatGPT predict the next word, why they sometimes get things wrong, and what 'training' really means.",
+        },
+        {
+          type: "practical",
+          icon: "chat",
+          title: "Build your own chatbot in Python",
+          description:
+            "Start with a rule-based study-helper bot, then connect it to a free AI model so it can answer in natural language.",
+          tool: "Python · Google Colab",
+        },
+        {
+          type: "practical",
+          icon: "bot",
+          title: "Create a simple AI agent",
+          description:
+            "Build an assistant that doesn't just chat but takes steps and uses a tool (looks something up or completes a task) — the idea behind real AI agents.",
+          tool: "Python",
+        },
+        {
+          type: "practical",
+          icon: "sparkles",
+          title: "Prompt engineering",
+          description:
+            "Learn to get great, reliable results from AI with clear instructions and examples — a skill used in almost every modern job.",
+          tool: "ChatGPT / Claude",
+        },
+        {
+          type: "practical",
+          icon: "image",
+          title: "Make something with Generative AI",
+          description:
+            "Create an image, short story or tune with a free generative-AI tool, and understand how the model produces it.",
+          tool: "Free GenAI tool",
+        },
+        {
+          type: "theory",
+          icon: "graph",
+          title: "AI across industries",
+          description:
+            "How AI powers healthcare (diagnosis), finance (fraud detection), shopping (recommendations), gaming (smart characters) and art & music.",
+        },
+        {
+          type: "theory",
+          icon: "shield",
+          title: "Responsible & ethical AI",
+          description:
+            "Bias, fairness, privacy and honesty — how to use AI as a tool the right way, and how to spot when it's wrong.",
+        },
+      ],
+      takeaway:
+        "You'll walk away having built a working chatbot and a simple agent, with a real feel for how AI is used everywhere.",
+    },
+    outcomes: [
+      "Write Python programs",
+      "Load, clean & visualize data",
+      "Understand & apply core ML algorithms",
+      "Build & present their own AI project",
+    ],
+    tutor_support:
+      "No prior experience needed. We start from the very basics and build up to real machine-learning projects — all in the browser with Google Colab, completely free.",
+    what_you_will_learn: [
+      "Write Python programs",
+      "Load, clean & visualize data",
+      "Understand & apply core ML algorithms",
+      "Build & present their own AI project",
+    ],
+    what_you_will_get: COMMON_INCLUDES,
+    tools: [
+      "Python",
+      "Google Colab",
+      "NumPy",
+      "pandas",
+      "Matplotlib",
+      "scikit-learn",
+      "Google Teachable Machine",
+    ],
+    price: "₹5,999",
+  },
+];
+
+// -----------------------------------------------------------------------------
+// Pricing
+//
+// ⚠️ PLACEHOLDER pricing — confirm before launch.
+//   • Single course = ₹5,999 (confirmed).
+//   • Full program bundle = ₹9,999 (ASSUMED — not yet confirmed; edit freely).
+// Add-on `icon` is a string key mapped to a lucide icon in PricingSection.
+// -----------------------------------------------------------------------------
+
+export interface PricingPlan {
+  id: string;
+  name: string;
+  blurb: string;
+  price: string;
+  originalPrice?: string;
+  save?: string;
+  includes: string[];
+  highlight?: boolean;
+  badge?: string;
+  cta: string;
+}
+
+export interface PricingAddOn {
+  icon: "ticket" | "users" | "card";
+  title: string;
+  text: string;
+}
+
+export const PRICING: {
+  currency: string;
+  note?: string;
+  plans: PricingPlan[];
+  addOns: PricingAddOn[];
+  footnotes: string[];
+} = {
+  currency: "INR (₹)",
+  plans: [
+    {
+      id: "single",
+      name: "Single Course",
+      blurb: "Either Course 1 or Course 2",
+      price: "₹5,999",
+      includes: [
+        "Choice of either course",
+        "8 weeks · weekly practicals",
+        "1 capstone project",
+        "Certificate of completion",
+        "Doubt support throughout",
+      ],
+      cta: "Enroll Now",
+    },
+    {
+      id: "full",
+      name: "Full Program",
+      blurb: "Both courses · best value",
+      price: "₹9,999",
+      originalPrice: "₹11,998",
+      save: "Save ₹1,999",
+      highlight: true,
+      badge: "Best Value",
+      includes: [
+        "Course 1 + Course 2",
+        "16 weeks · 2 capstones",
+        "Certificate of completion",
+        "Doubt support throughout",
+        "Priority batch placement",
+      ],
+      cta: "Enroll Now",
+    },
+  ],
+  addOns: [
+    {
+      icon: "ticket",
+      title: "Early-bird",
+      text: "₹1,000 off for a limited number of seats.",
+    },
+    {
+      icon: "users",
+      title: "Sibling / group (2+)",
+      text: "10% off when you enroll together.",
+    },
+    {
+      icon: "card",
+      title: "Easy installments",
+      text: "Pay month-by-month option available.",
+    },
+  ],
+  footnotes: [
+    "All plans include live sessions, weekly hands-on practicals, doubt support, and a completion certificate.",
+  ],
+};
+
+// Static accessors (used directly as the offline fallback by programServer.ts).
+export function getStaticProgramCourses(): ProgramCourse[] {
+  return COURSES;
+}
+
+export function getStaticProgramCourseBySlug(slug: string): ProgramCourse | undefined {
+  return COURSES.find((c) => c.slug === slug);
+}

@@ -14,8 +14,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Motion AI & Tech",
-  description: "Modern ed-tech platform",
+  title: "Motion AI & Tech — Young Coders Program",
+  description:
+    "Coding, Data & AI for students of Class 9 and above. Hands-on courses in C++ & SQL and Python with Machine Learning, each ending in a real project.",
 };
 
 export default function RootLayout({
